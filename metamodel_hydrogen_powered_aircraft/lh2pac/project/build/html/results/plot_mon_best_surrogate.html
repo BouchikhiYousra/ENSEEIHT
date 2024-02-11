@@ -1,0 +1,723 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="LH2pac Uncertain space" href="plot_mon_uncertain_space.html" /><link rel="prev" title="LH2pac Sensitivity analysis" href="plot_mon_sensitivity_analysis.html" />
+
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>LH2pac Surrogate models - LH2PAC project documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">LH2PAC project  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">LH2PAC project  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deliverables.html">Deliverables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use_case.html">Use Case</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_doe.html">Design of experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_design_space.html">Design space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_sensitivity_analysis.html">Sensitivity analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_surrogate.html">Surrogate model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_uncertain_space.html">Uncertain space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_uncertainty_propagation.html">Uncertainty propagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/plot_unit_conversion.html">Unit conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Results</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="discipline.html">H2TurboFan: definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mon_design_space.html">LH2pac Design space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mon_optimization100.html">LH2pac Optimization 100 iterations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mon_optimization.html">LH2pac Optimization 30 iterations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mon_sensitivity_analysis.html">LH2pac Sensitivity analysis</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">LH2pac Surrogate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mon_uncertain_space.html">LH2pac Uncertain space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_mon_uncertainty_propagation.html">LH2pac Uncertainty propagation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../report/index.html">Report</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../report/introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../report/part1.html">Métamodélisation et optimisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../report/part2.html">Métamodélisation et quantification des incertitudes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../report/conclusion.html">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendices:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../restructuredtext.html">reST introduction</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-results-plot-mon-best-surrogate-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="lh2pac-surrogate-models">
+<span id="sphx-glr-results-plot-mon-best-surrogate-py"></span><h1>LH2pac Surrogate models<a class="headerlink" href="#lh2pac-surrogate-models" title="Permalink to this heading">#</a></h1>
+<p>In this example,
+we will build a surrogate model for the H2TurboFan problem using
+several Regressors. After comparing their R2 measures,
+we will optimize the best surrogate model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gemseo.api</span> <span class="kn">import</span> <span class="n">configure_logger</span>
+<span class="kn">from</span> <span class="nn">gemseo.api</span> <span class="kn">import</span> <span class="n">create_scenario</span>
+<span class="kn">from</span> <span class="nn">gemseo.api</span> <span class="kn">import</span> <span class="n">create_surrogate</span>
+<span class="kn">from</span> <span class="nn">gemseo.mlearning.qual_measure.r2_measure</span> <span class="kn">import</span> <span class="n">R2Measure</span>
+<span class="kn">from</span> <span class="nn">gemseo_mlearning.api</span> <span class="kn">import</span> <span class="n">sample_discipline</span>
+<span class="kn">from</span> <span class="nn">discipline</span> <span class="kn">import</span> <span class="n">H2TurboFan</span>
+<span class="kn">from</span> <span class="nn">plot_mon_design_space</span> <span class="kn">import</span> <span class="n">lh2pacDesignSpace</span>
+<span class="kn">from</span> <span class="nn">marilib.utils</span> <span class="kn">import</span> <span class="n">unit</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">configure_logger</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;RootLogger root (INFO)&gt;
+</pre></div>
+</div>
+<p>Firstly,
+we instantiate the H2TurboFan discipline</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span> <span class="o">=</span> <span class="n">H2TurboFan</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, we import the design space:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">design_space</span> <span class="o">=</span> <span class="n">lh2pacDesignSpace</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">design_space</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Design space:
++--------------+-------------+--------+-------------+-------+
+| name         | lower_bound | value  | upper_bound | type  |
++--------------+-------------+--------+-------------+-------+
+| thrust       |    100000   | 125000 |    150000   | float |
+| bpr          |      5      |  8.5   |      12     | float |
+| area         |     120     |  160   |     200     | float |
+| aspect_ratio |      7      |  9.5   |      12     | float |
++--------------+-------------+--------+-------------+-------+
+</pre></div>
+</div>
+<p>Then,
+we sample the discipline with an optimal LHS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">sample_discipline</span><span class="p">(</span><span class="n">discipline</span><span class="p">,</span> <span class="n">design_space</span><span class="p">,</span> \
+    <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mtow&quot;</span><span class="p">,</span><span class="s2">&quot;tofl&quot;</span><span class="p">,</span><span class="s2">&quot;vapp&quot;</span><span class="p">,</span> <span class="s2">&quot;vz_mcl&quot;</span><span class="p">,</span><span class="s2">&quot;vz_mcr&quot;</span><span class="p">,</span><span class="s2">&quot;oei_path&quot;</span><span class="p">,</span><span class="s2">&quot;ttc&quot;</span><span class="p">,</span><span class="s2">&quot;far&quot;</span><span class="p">],</span>\
+        <span class="n">algo_name</span><span class="o">=</span> <span class="s2">&quot;OT_OPT_LHS&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>INFO - 21:47:21:
+INFO - 21:47:21: *** Start DOEScenario execution ***
+INFO - 21:47:21: DOEScenario
+INFO - 21:47:21:    Disciplines: H2TurboFan
+INFO - 21:47:21:    MDO formulation: DisciplinaryOpt
+INFO - 21:47:21: Optimization problem:
+INFO - 21:47:21:    minimize mtow(thrust, bpr, area, aspect_ratio)
+INFO - 21:47:21:    with respect to area, aspect_ratio, bpr, thrust
+INFO - 21:47:21:    over the design space:
+INFO - 21:47:21:    +--------------+-------------+--------+-------------+-------+
+INFO - 21:47:21:    | name         | lower_bound | value  | upper_bound | type  |
+INFO - 21:47:21:    +--------------+-------------+--------+-------------+-------+
+INFO - 21:47:21:    | thrust       |    100000   | 125000 |    150000   | float |
+INFO - 21:47:21:    | bpr          |      5      |  8.5   |      12     | float |
+INFO - 21:47:21:    | area         |     120     |  160   |     200     | float |
+INFO - 21:47:21:    | aspect_ratio |      7      |  9.5   |      12     | float |
+INFO - 21:47:21:    +--------------+-------------+--------+-------------+-------+
+INFO - 21:47:21: Solving optimization problem with algorithm OT_OPT_LHS:
+INFO - 21:47:21: Generation of OT_OPT_LHS DOE with OpenTURNS
+INFO - 21:47:21: ...   0%|          | 0/30 [00:00&lt;?, ?it]
+INFO - 21:47:22: ...   3%|▎         | 1/30 [00:00&lt;00:00, 44.37 it/sec, obj=8.71e+4]
+INFO - 21:47:22: ...   7%|▋         | 2/30 [00:01&lt;00:01, 22.80 it/sec, obj=8.6e+4]
+INFO - 21:47:23: ...  10%|█         | 3/30 [00:02&lt;00:01, 14.36 it/sec, obj=8.8e+4]
+INFO - 21:47:24: ...  13%|█▎        | 4/30 [00:02&lt;00:02, 10.73 it/sec, obj=8.59e+4]
+INFO - 21:47:25: ...  17%|█▋        | 5/30 [00:03&lt;00:02,  8.55 it/sec, obj=8.43e+4]
+INFO - 21:47:25: ...  20%|██        | 6/30 [00:04&lt;00:03,  7.10 it/sec, obj=9.04e+4]
+INFO - 21:47:26: ...  23%|██▎       | 7/30 [00:04&lt;00:03,  6.06 it/sec, obj=7.84e+4]
+INFO - 21:47:27: ...  27%|██▋       | 8/30 [00:05&lt;00:04,  5.29 it/sec, obj=7.94e+4]
+INFO - 21:47:27: ...  30%|███       | 9/30 [00:06&lt;00:04,  4.76 it/sec, obj=8.52e+4]
+INFO - 21:47:28: ...  33%|███▎      | 10/30 [00:07&lt;00:04,  4.12 it/sec, obj=9.33e+4]
+INFO - 21:47:29: ...  37%|███▋      | 11/30 [00:07&lt;00:05,  3.76 it/sec, obj=8.51e+4]
+INFO - 21:47:30: ...  40%|████      | 12/30 [00:08&lt;00:05,  3.44 it/sec, obj=8.27e+4]
+INFO - 21:47:30: ...  43%|████▎     | 13/30 [00:09&lt;00:05,  3.18 it/sec, obj=8.86e+4]
+INFO - 21:47:31: ...  47%|████▋     | 14/30 [00:10&lt;00:05,  2.96 it/sec, obj=8.14e+4]
+INFO - 21:47:32: ...  50%|█████     | 15/30 [00:10&lt;00:05,  2.78 it/sec, obj=8.51e+4]
+INFO - 21:47:33: ...  53%|█████▎    | 16/30 [00:11&lt;00:05,  2.59 it/sec, obj=9.22e+4]
+INFO - 21:47:33: ...  57%|█████▋    | 17/30 [00:12&lt;00:05,  2.44 it/sec, obj=8.57e+4]
+INFO - 21:47:34: ...  60%|██████    | 18/30 [00:13&lt;00:05,  2.30 it/sec, obj=9.27e+4]
+INFO - 21:47:35: ...  63%|██████▎   | 19/30 [00:13&lt;00:05,  2.18 it/sec, obj=8.18e+4]
+INFO - 21:47:36: ...  67%|██████▋   | 20/30 [00:14&lt;00:04,  2.07 it/sec, obj=8.98e+4]
+INFO - 21:47:36: ...  70%|███████   | 21/30 [00:15&lt;00:04,  1.97 it/sec, obj=8.81e+4]
+INFO - 21:47:37: ...  73%|███████▎  | 22/30 [00:15&lt;00:04,  1.88 it/sec, obj=7.84e+4]
+INFO - 21:47:38: ...  77%|███████▋  | 23/30 [00:16&lt;00:03,  1.78 it/sec, obj=7.82e+4]
+INFO - 21:47:39: ...  80%|████████  | 24/30 [00:17&lt;00:03,  1.71 it/sec, obj=8.66e+4]
+INFO - 21:47:39: ...  83%|████████▎ | 25/30 [00:18&lt;00:03,  1.65 it/sec, obj=8.57e+4]
+INFO - 21:47:41: ...  87%|████████▋ | 26/30 [00:19&lt;00:02,  1.53 it/sec, obj=8.99e+4]
+INFO - 21:47:41: ...  90%|█████████ | 27/30 [00:20&lt;00:02,  1.48 it/sec, obj=8.18e+4]
+INFO - 21:47:42: ...  93%|█████████▎| 28/30 [00:20&lt;00:01,  1.43 it/sec, obj=8.04e+4]
+INFO - 21:47:43: ...  97%|█████████▋| 29/30 [00:21&lt;00:00,  1.38 it/sec, obj=9.42e+4]
+INFO - 21:47:44: ... 100%|██████████| 30/30 [00:22&lt;00:00,  1.33 it/sec, obj=8.45e+4]
+INFO - 21:47:44: ... 100%|██████████| 30/30 [00:22&lt;00:00,  1.33 it/sec, obj=8.45e+4]
+INFO - 21:47:44: Optimization result:
+INFO - 21:47:44:    Optimizer info:
+INFO - 21:47:44:       Status: None
+INFO - 21:47:44:       Message: None
+INFO - 21:47:44:       Number of calls to the objective function by the optimizer: 30
+INFO - 21:47:44:    Solution:
+INFO - 21:47:44:       Objective: 78227.96380152939
+INFO - 21:47:44:       Design space:
+INFO - 21:47:44:       +--------------+-------------+-------------------+-------------+-------+
+INFO - 21:47:44:       | name         | lower_bound |       value       | upper_bound | type  |
+INFO - 21:47:44:       +--------------+-------------+-------------------+-------------+-------+
+INFO - 21:47:44:       | thrust       |    100000   | 104989.0047922888 |    150000   | float |
+INFO - 21:47:44:       | bpr          |      5      | 11.06963922133657 |      12     | float |
+INFO - 21:47:44:       | area         |     120     | 129.7460430732734 |     200     | float |
+INFO - 21:47:44:       | aspect_ratio |      7      | 7.879509020261423 |      12     | float |
+INFO - 21:47:44:       +--------------+-------------+-------------------+-------------+-------+
+INFO - 21:47:44: *** End DOEScenario execution (time: 0:00:22.581174) ***
+</pre></div>
+</div>
+<p>We instantiate the dataframes that will be used to compare the different surrogate models :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_r2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">data_r2_kfold</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Creating a Linear Regressor surrogate model and computing the R2 measure :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">surrogate_discipline1</span> <span class="o">=</span> <span class="n">create_surrogate</span><span class="p">(</span><span class="s2">&quot;LinearRegressor&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">R2Measure</span><span class="p">(</span><span class="n">surrogate_discipline1</span><span class="o">.</span><span class="n">regression_model</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;LinearReg&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_learn</span><span class="p">()</span>
+<span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;LinearReg&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_kfolds</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_learn&quot;</span><span class="p">,</span><span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;LinearReg&#39;</span><span class="p">])</span>  <span class="c1"># learning measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_kfolds&quot;</span><span class="p">,</span><span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;LinearReg&#39;</span><span class="p">])</span>  <span class="c1"># k-folds cross-validation measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>    INFO - 21:47:44: Build the surrogate discipline: LinReg_H2TurboFan
+    INFO - 21:47:44:    Dataset name: H2TurboFan
+    INFO - 21:47:44:    Dataset size: 30
+    INFO - 21:47:44:    Surrogate model: LinearRegressor
+    INFO - 21:47:44: Use the surrogate discipline: LinReg_H2TurboFan
+    INFO - 21:47:44:    Inputs: area, aspect_ratio, bpr, thrust
+    INFO - 21:47:44:    Outputs: far, mtow, oei_path, tofl, ttc, vapp, vz_mcl, vz_mcr
+    INFO - 21:47:44:    Jacobian: use surrogate model jacobian
+r2 de l&#39;evaluate_learn 0    0.938547
+1    0.957363
+2    0.988120
+3    0.676139
+4    0.851816
+5    0.983510
+6    0.983967
+7    0.980454
+Name: LinearReg, dtype: float64
+
+
+
+r2 de l&#39;evaluate_kfolds 0    0.896416
+1    0.928783
+2    0.980243
+3    0.470521
+4    0.745120
+5    0.973847
+6    0.975148
+7    0.970051
+Name: LinearReg, dtype: float64
+</pre></div>
+</div>
+<p>Creating a Polynomial Regressor surrogate model and computing the R2 measure :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">surrogate_discipline1</span> <span class="o">=</span> <span class="n">create_surrogate</span><span class="p">(</span><span class="s2">&quot;PolynomialRegressor&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">degree</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">R2Measure</span><span class="p">(</span><span class="n">surrogate_discipline1</span><span class="o">.</span><span class="n">regression_model</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;PolyReg&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_learn</span><span class="p">()</span>
+<span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;PolyReg&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_kfolds</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_learn&quot;</span><span class="p">,</span><span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;PolyReg&#39;</span><span class="p">])</span>  <span class="c1"># learning measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_kfolds&quot;</span><span class="p">,</span><span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;PolyReg&#39;</span><span class="p">])</span>  <span class="c1"># k-folds cross-validation measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>    INFO - 21:47:44: Build the surrogate discipline: PolyReg_H2TurboFan
+    INFO - 21:47:44:    Dataset name: H2TurboFan
+    INFO - 21:47:44:    Dataset size: 30
+    INFO - 21:47:44:    Surrogate model: PolynomialRegressor
+/home/n7student/anaconda3/envs/lh2pac/lib/python3.9/site-packages/sklearn/utils/deprecation.py:103: FutureWarning: The attribute `n_input_features_` was deprecated in version 1.0 and will be removed in 1.2.
+  warnings.warn(msg, category=FutureWarning)
+    INFO - 21:47:44: Use the surrogate discipline: PolyReg_H2TurboFan
+    INFO - 21:47:44:    Inputs: area, aspect_ratio, bpr, thrust
+    INFO - 21:47:44:    Outputs: far, mtow, oei_path, tofl, ttc, vapp, vz_mcl, vz_mcr
+    INFO - 21:47:44:    Jacobian: use surrogate model jacobian
+r2 de l&#39;evaluate_learn 0    1.0
+1    1.0
+2    1.0
+3    1.0
+4    1.0
+5    1.0
+6    1.0
+7    1.0
+Name: PolyReg, dtype: float64
+
+
+
+r2 de l&#39;evaluate_kfolds 0    0.908769
+1    0.942575
+2    0.979982
+3    0.561670
+4    0.775875
+5    0.988317
+6    0.969968
+7    0.967324
+Name: PolyReg, dtype: float64
+</pre></div>
+</div>
+<p>Creating a RBF Regressor surrogate model and computing the R2 measure :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">surrogate_discipline2</span> <span class="o">=</span> <span class="n">create_surrogate</span><span class="p">(</span><span class="s2">&quot;RBFRegressor&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">R2Measure</span><span class="p">(</span><span class="n">surrogate_discipline2</span><span class="o">.</span><span class="n">regression_model</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;RBF&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_learn</span><span class="p">()</span>
+<span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;RBF&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_kfolds</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_learn&quot;</span><span class="p">,</span><span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;RBF&#39;</span><span class="p">])</span>  <span class="c1"># learning measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_kfolds&quot;</span><span class="p">,</span><span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;RBF&#39;</span><span class="p">])</span>  <span class="c1"># k-folds cross-validation measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>    INFO - 21:47:44: Build the surrogate discipline: RBF_H2TurboFan
+    INFO - 21:47:44:    Dataset name: H2TurboFan
+    INFO - 21:47:44:    Dataset size: 30
+    INFO - 21:47:44:    Surrogate model: RBFRegressor
+    INFO - 21:47:44: Use the surrogate discipline: RBF_H2TurboFan
+    INFO - 21:47:44:    Inputs: area, aspect_ratio, bpr, thrust
+    INFO - 21:47:44:    Outputs: far, mtow, oei_path, tofl, ttc, vapp, vz_mcl, vz_mcr
+    INFO - 21:47:44:    Jacobian: use surrogate model jacobian
+r2 de l&#39;evaluate_learn 0    1.0
+1    1.0
+2    1.0
+3    1.0
+4    1.0
+5    1.0
+6    1.0
+7    1.0
+Name: RBF, dtype: float64
+
+
+
+r2 de l&#39;evaluate_kfolds 0    0.956733
+1    0.966757
+2    0.982029
+3    0.682671
+4    0.851366
+5    0.977705
+6    0.982859
+7    0.979509
+Name: RBF, dtype: float64
+</pre></div>
+</div>
+<p>Creating a Gaussian Process Regressor surrogate model and computing the R2 measure :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">surrogate_discipline3</span> <span class="o">=</span> <span class="n">create_surrogate</span><span class="p">(</span><span class="s2">&quot;GaussianProcessRegressor&quot;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">R2Measure</span><span class="p">(</span><span class="n">surrogate_discipline3</span><span class="o">.</span><span class="n">regression_model</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;GP&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_learn</span><span class="p">()</span>
+<span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;GP&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">r2</span><span class="o">.</span><span class="n">evaluate_kfolds</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_learn&quot;</span><span class="p">,</span><span class="n">data_r2</span><span class="p">[</span><span class="s1">&#39;GP&#39;</span><span class="p">])</span>  <span class="c1"># learning measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r2 de l&#39;evaluate_kfolds&quot;</span><span class="p">,</span><span class="n">data_r2_kfold</span><span class="p">[</span><span class="s1">&#39;GP&#39;</span><span class="p">])</span>  <span class="c1"># k-folds cross-validation measure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>    INFO - 21:47:44: Build the surrogate discipline: GPR_H2TurboFan
+    INFO - 21:47:44:    Dataset name: H2TurboFan
+    INFO - 21:47:44:    Dataset size: 30
+    INFO - 21:47:44:    Surrogate model: GaussianProcessRegressor
+    INFO - 21:47:44: Use the surrogate discipline: GPR_H2TurboFan
+    INFO - 21:47:44:    Inputs: area, aspect_ratio, bpr, thrust
+    INFO - 21:47:44:    Outputs: far, mtow, oei_path, tofl, ttc, vapp, vz_mcl, vz_mcr
+    INFO - 21:47:44:    Jacobian: use finite differences
+r2 de l&#39;evaluate_learn 0    1.0
+1    1.0
+2    1.0
+3    1.0
+4    1.0
+5    1.0
+6    1.0
+7    1.0
+Name: GP, dtype: float64
+
+
+
+r2 de l&#39;evaluate_kfolds 0    0.985080
+1    0.989670
+2    0.993931
+3    0.780541
+4    0.898234
+5    0.991725
+6    0.993864
+7    0.992088
+Name: GP, dtype: float64
+</pre></div>
+</div>
+<p>Let’s compare the results of the differents models</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mtow&quot;</span><span class="p">,</span><span class="s2">&quot;tofl&quot;</span><span class="p">,</span><span class="s2">&quot;vapp&quot;</span><span class="p">,</span> <span class="s2">&quot;vz_mcl&quot;</span><span class="p">,</span><span class="s2">&quot;vz_mcr&quot;</span><span class="p">,</span><span class="s2">&quot;oei_path&quot;</span><span class="p">,</span><span class="s2">&quot;ttc&quot;</span><span class="p">,</span><span class="s2">&quot;far&quot;</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span><span class="n">data_r2</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span> <span class="n">labels</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;LinearRegressor&#39;</span><span class="p">,</span> <span class="s1">&#39;PolynomialRegressor&#39;</span><span class="p">,</span> <span class="s1">&#39;RBFRegressor&#39;</span><span class="p">,</span> <span class="s1">&#39;GaussianProcessRegressor&#39;</span><span class="p">],</span> \
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;surrogate_r2.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span><span class="n">data_r2_kfold</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span> <span class="n">labels</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;LinearRegressor&#39;</span><span class="p">,</span> <span class="s1">&#39;PolynomialRegressor&#39;</span><span class="p">,</span> <span class="s1">&#39;RBFRegressor&#39;</span><span class="p">,</span> <span class="s1">&#39;GaussianProcessRegressor&#39;</span><span class="p">],</span> \
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;R2 Error on Kfolds&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;surrogate_r2_kfold.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../_images/sphx_glr_plot_mon_best_surrogate_001.png" srcset="../_images/sphx_glr_plot_mon_best_surrogate_001.png" alt="plot mon best surrogate" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_plot_mon_best_surrogate_002.png" srcset="../_images/sphx_glr_plot_mon_best_surrogate_002.png" alt="R2 Error on Kfolds" class = "sphx-glr-multi-img"/></li>
+</ul>
+<p>optimization of the best (based on the R2 results) surrogate model,
+Here it’s the surrogate model created with a Gaussian Process Regressor</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#first we create a scenario</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="n">create_scenario</span><span class="p">([</span><span class="n">surrogate_discipline3</span><span class="p">],</span> <span class="s2">&quot;DisciplinaryOpt&quot;</span><span class="p">,</span> <span class="s2">&quot;mtow&quot;</span><span class="p">,</span> <span class="n">design_space</span><span class="p">)</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;tofl&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">2200.</span><span class="p">)</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;vapp&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">mps_kt</span><span class="p">(</span><span class="mf">137.</span><span class="p">))</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;vz_mcl&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">mps_ftpmin</span><span class="p">(</span><span class="mf">300.</span><span class="p">))</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;vz_mcr&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">mps_ftpmin</span><span class="p">(</span><span class="mf">0.</span><span class="p">))</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;oei_path&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0.0011</span><span class="p">)</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;ttc&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">unit</span><span class="o">.</span><span class="n">s_min</span><span class="p">(</span><span class="mf">25.</span><span class="p">))</span>
+<span class="n">scenario</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">(</span><span class="s2">&quot;far&quot;</span><span class="p">,</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">13.4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>before executing it with a gradient-free optimizer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span><span class="o">.</span><span class="n">execute</span><span class="p">({</span><span class="s2">&quot;algo&quot;</span><span class="p">:</span> <span class="s2">&quot;NLOPT_COBYLA&quot;</span><span class="p">,</span> <span class="s2">&quot;max_iter&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>    INFO - 21:47:45:
+    INFO - 21:47:45: *** Start MDOScenario execution ***
+    INFO - 21:47:45: MDOScenario
+    INFO - 21:47:45:    Disciplines: Surrogate discipline: GPR_H2TurboFan
+    INFO - 21:47:45:    Dataset name: H2TurboFan
+    INFO - 21:47:45:    Dataset size: 30
+    INFO - 21:47:45:    Surrogate model: GaussianProcessRegressor
+    INFO - 21:47:45:    Inputs: area, aspect_ratio, bpr, thrust
+    INFO - 21:47:45:    Outputs: far, mtow, oei_path, tofl, ttc, vapp, vz_mcl, vz_mcr
+    INFO - 21:47:45:    MDO formulation: DisciplinaryOpt
+    INFO - 21:47:45: Optimization problem:
+    INFO - 21:47:45:    minimize mtow(thrust, bpr, area, aspect_ratio)
+    INFO - 21:47:45:    with respect to area, aspect_ratio, bpr, thrust
+    INFO - 21:47:45:    subject to constraints:
+    INFO - 21:47:45:       tofl(thrust, bpr, area, aspect_ratio) &lt;= 2200.0
+    INFO - 21:47:45:       vapp(thrust, bpr, area, aspect_ratio) &lt;= 70.47888888888889
+    INFO - 21:47:45:       vz_mcl(thrust, bpr, area, aspect_ratio) &gt;= 1.524
+    INFO - 21:47:45:       vz_mcr(thrust, bpr, area, aspect_ratio) &gt;= 0.0
+    INFO - 21:47:45:       oei_path(thrust, bpr, area, aspect_ratio) &gt;= 0.0011
+    INFO - 21:47:45:       ttc(thrust, bpr, area, aspect_ratio) &lt;= 1500.0
+    INFO - 21:47:45:       far(thrust, bpr, area, aspect_ratio) &lt;= 13.4
+    INFO - 21:47:45:    over the design space:
+    INFO - 21:47:45:    +--------------+-------------+-------------------+-------------+-------+
+    INFO - 21:47:45:    | name         | lower_bound |       value       | upper_bound | type  |
+    INFO - 21:47:45:    +--------------+-------------+-------------------+-------------+-------+
+    INFO - 21:47:45:    | thrust       |    100000   | 104989.0047922888 |    150000   | float |
+    INFO - 21:47:45:    | bpr          |      5      | 11.06963922133657 |      12     | float |
+    INFO - 21:47:45:    | area         |     120     | 129.7460430732734 |     200     | float |
+    INFO - 21:47:45:    | aspect_ratio |      7      | 7.879509020261423 |      12     | float |
+    INFO - 21:47:45:    +--------------+-------------+-------------------+-------------+-------+
+    INFO - 21:47:45: Solving optimization problem with algorithm NLOPT_COBYLA:
+    INFO - 21:47:45: ...   0%|          | 0/1000 [00:00&lt;?, ?it]
+    INFO - 21:47:45: ...   5%|▍         | 46/1000 [00:00&lt;00:00, 9803.21 it/sec, obj=7.95e+4]
+    INFO - 21:47:45: ...  10%|▉         | 96/1000 [00:00&lt;00:00, 4923.44 it/sec, obj=7.92e+4]
+    INFO - 21:47:45: ...  13%|█▎        | 129/1000 [00:00&lt;00:00, 3764.64 it/sec, obj=7.92e+4]
+    INFO - 21:47:45: Optimization result:
+    INFO - 21:47:45:    Optimizer info:
+    INFO - 21:47:45:       Status: None
+    INFO - 21:47:45:       Message: Successive iterates of the objective function are closer than ftol_rel or ftol_abs. GEMSEO Stopped the driver
+    INFO - 21:47:45:       Number of calls to the objective function by the optimizer: 130
+    INFO - 21:47:45:    Solution:
+    INFO - 21:47:45:       The solution is feasible.
+    INFO - 21:47:45:       Objective: 79204.48370244469
+    INFO - 21:47:45:       Standardized constraints:
+    INFO - 21:47:45:          -oei_path + 0.0011 = -0.015778145395502825
+    INFO - 21:47:45:          -vz_mcl + 1.524 = -2.9064943606839124
+    INFO - 21:47:45:          -vz_mcr - +0.0 = -0.19630896186072666
+    INFO - 21:47:45:          far - 13.4 = -0.770714928386651
+    INFO - 21:47:45:          tofl - 2200.0 = 5.883158064534655e-05
+    INFO - 21:47:45:          ttc - 1500.0 = -273.08660284870234
+    INFO - 21:47:45:          vapp - 70.47888888888889 = 1.0383628534782474e-07
+    INFO - 21:47:45:       Design space:
+    INFO - 21:47:45:       +--------------+-------------+-------------------+-------------+-------+
+    INFO - 21:47:45:       | name         | lower_bound |       value       | upper_bound | type  |
+    INFO - 21:47:45:       +--------------+-------------+-------------------+-------------+-------+
+    INFO - 21:47:45:       | thrust       |    100000   |  109416.403844102 |    150000   | float |
+    INFO - 21:47:45:       | bpr          |      5      |         12        |      12     | float |
+    INFO - 21:47:45:       | area         |     120     | 152.1568478493883 |     200     | float |
+    INFO - 21:47:45:       | aspect_ratio |      7      |  11.1490301932375 |      12     | float |
+    INFO - 21:47:45:       +--------------+-------------+-------------------+-------------+-------+
+    INFO - 21:47:45: *** End MDOScenario execution (time: 0:00:00.272936) ***
+
+{&#39;max_iter&#39;: 1000, &#39;algo&#39;: &#39;NLOPT_COBYLA&#39;}
+</pre></div>
+</div>
+<p>Lastly,
+we can plot the optimization history:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scenario</span><span class="o">.</span><span class="n">post_process</span><span class="p">(</span><span class="s2">&quot;OptHistoryView&quot;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> \
+    <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;BestSurrogate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../_images/sphx_glr_plot_mon_best_surrogate_003.png" srcset="../_images/sphx_glr_plot_mon_best_surrogate_003.png" alt="Evolution of the optimization variables" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_plot_mon_best_surrogate_004.png" srcset="../_images/sphx_glr_plot_mon_best_surrogate_004.png" alt="Evolution of the objective value" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_plot_mon_best_surrogate_005.png" srcset="../_images/sphx_glr_plot_mon_best_surrogate_005.png" alt="Distance to the optimum" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_plot_mon_best_surrogate_006.png" srcset="../_images/sphx_glr_plot_mon_best_surrogate_006.png" alt="Evolution of the inequality constraints" class = "sphx-glr-multi-img"/></li>
+</ul>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  24.452 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-results-plot-mon-best-surrogate-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/71c3988363d18595437d73e4e581f884/plot_mon_best_surrogate.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mon_best_surrogate.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/2ffde1bb4e124c77c18af22d02e4c287/plot_mon_best_surrogate.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_mon_best_surrogate.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="plot_mon_uncertain_space.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">LH2pac Uncertain space</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="plot_mon_sensitivity_analysis.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">LH2pac Sensitivity analysis</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Matthias De Lozzo
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
+</html>

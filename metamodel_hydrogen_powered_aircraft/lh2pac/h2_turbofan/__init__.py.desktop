@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Name=__init__.py
+Comment=Ouvre « /home/n7student/S9/metamodel/lh2pac/h2_turbofan/__init__.py »
+Icon=text-x-python
+Name[fr_FR]=__init__.py
+Comment[fr_FR]=Ouvre « /home/n7student/S9/metamodel/lh2pac/h2_turbofan/__init__.py »
+Icon[fr_FR]=text-x-python
+URL=file:///home/n7student/S9/metamodel/lh2pac/h2_turbofan/__init__.py
+Type=Link
